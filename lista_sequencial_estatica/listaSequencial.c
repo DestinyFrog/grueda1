@@ -1,10 +1,11 @@
+#include <stdio.h>
 #include <stdlib.h>
 
 #include "listaSequencial.h"
 
 struct lista {
     int qtd;
-    struct lista dados[MAX];
+    struct aluno dados[MAX];
 };
 
 Lista* criar_lista() {
@@ -68,8 +69,8 @@ int insere_lista_ordenada(Lista* li, struct aluno al) {
         return 0;
 
     int k = 0;
-    while (k < li->qtd && li->dados[k].matricula != al.matricula)
-        k++
+    while (k < li->qtd && li->dados[k].matricula < al.matricula)
+        k++;
 
     for (int i = li->qtd - 1; i >= k; i--)
         li->dados[i + 1] = li->dados[i];
@@ -117,4 +118,20 @@ int remove_lista(Lista *li, int matricula) {
 
     li->qtd--;
     return 1;
+}
+
+void printar_lista(Lista *li) {
+    if (li->qtd == 0) {
+        printf("---\nA lista está vazia\n---\n");
+        return;
+    }
+
+    printf("---\n");
+    for (int i = 0; i < li->qtd; i++) {
+        printf("matricula: %d\n", li->dados[i].matricula);
+        printf("nota 1: %.2f\n", li->dados[i].n1);
+        printf("nota 2: %.2f\n", li->dados[i].n2);
+        printf("nota 3: %.2f\n", li->dados[i].n3);
+        printf("---\n");
+    }
 }
