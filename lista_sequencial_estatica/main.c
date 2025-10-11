@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 #include "listaSequencial.h"
 
 struct aluno ler_aluno();
@@ -37,7 +39,7 @@ int main() {
     for (int i = 0; i < 10; i++) {
         res = ler_aluno();
         insere_lista_ordenada(li, res);
-        print("---\n");
+        printf("---\n");
     }
 
     printar_lista(li);
@@ -47,7 +49,7 @@ int main() {
 
 struct aluno ler_aluno() {
     struct aluno al;
-    printf("Insira os seguintes dados do aluno:\n")
+    printf("Insira os seguintes dados do aluno:\n");
     printf("matricula: ");
     scanf("%d", &al.matricula);
     printf("nota 1: ");
