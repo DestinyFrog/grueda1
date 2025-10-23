@@ -23,4 +23,5 @@ int consulta_posicao(Lista *li, int posicao, ALUNO *al);
 int consulta_matricula(Lista *li, int mat, ALUNO *al);
 ALUNO coleta_dados();
 
+void printar_aluno(ALUNO* al);
 void printar_lista(Lista *li);

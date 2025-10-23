@@ -201,7 +201,7 @@ int consulta_posicao(Lista *li, int posicao, ALUNO *al) {
         aborta_programa();
 
     if (posicao <= 0)
-        return;
+        return 0;
 
     ELEM *no = *li;
     int i = 1;
@@ -232,6 +232,13 @@ int consulta_matricula(Lista *li, int mat, ALUNO *al) {
     return 1;
 }
 
+void printar_aluno(ALUNO* al) {
+    printf("matricula: %d\n", al->matricula);
+    printf("nota 1: %.2f\n", al->n1);
+    printf("nota 2: %.2f\n", al->n2);
+    printf("nota 3: %.2f\n", al->n3);
+}
+
 void printar_lista(Lista *li) {
     if (li == NULL) {
         printf("---\nA lista está vazia\n---\n");
@@ -242,10 +249,7 @@ void printar_lista(Lista *li) {
     
     ELEM* no = (*li);
     while (no != NULL) {
-        printf("matricula: %d\n", no->dados.matricula);
-        printf("nota 1: %.2f\n", no->dados.n1);
-        printf("nota 2: %.2f\n", no->dados.n2);
-        printf("nota 3: %.2f\n", no->dados.n3);
+        printar_aluno(&no->dados);
         printf("---\n");
         no = no->prox;
     }
