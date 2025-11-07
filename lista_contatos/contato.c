@@ -1,4 +1,4 @@
-#include "contato.h"
+#include "lista_contatos.h"
 
 CONTATO scan_contato() {
     CONTATO contato;
@@ -35,14 +35,25 @@ CONTATO scan_contato() {
     return contato;
 }
 
+CONTATO create_fake_contato() {
+    CONTATO contato = {
+        10,
+        "Pedro Calisto",
+        "ACME INC.",
+        "TI e telefonia",
+        "(11) 1234-5678",
+        "+55 (11) 01234-5678",
+        "pedro.calisto@acme.com"
+    };
+    return contato;
+}
+
 void print_contato(CONTATO* contato) {
-    printf("\t================================================\n");
-    printf("\t N° de Identificação   : %d\n", contato->numero);
-    printf("\t Nome                  : %s\n", contato->nome);
-    printf("\t Empresa               : %s\n", contato->empresa);
-    printf("\t Departamento          : %s\n", contato->departamento);
-    printf("\t Telefone Fixo         : %s\n", contato->telefone_fixo);
-    printf("\t Telefone Celular      : %s\n", contato->telefone_celular);
-    printf("\t Email                 : %s\n", contato->email);
-    printf("\t================================================\n");
+    printf("\t N° de Identificação   | %d\n", contato->numero);
+    printf("\t Nome                  | %s\n", contato->nome);
+    printf("\t Empresa               | %s\n", contato->empresa);
+    printf("\t Departamento          | %s\n", contato->departamento);
+    printf("\t Telefone Fixo         | %s\n", contato->telefone_fixo);
+    printf("\t Telefone Celular      | %s\n", contato->telefone_celular);
+    printf("\t Email                 | %s\n", contato->email);
 }

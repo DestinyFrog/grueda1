@@ -1,15 +1,11 @@
 #include "lista_contatos.h"
 
-typedef struct elem {
-    CONTATO data;
-    struct elem* prox;
-} NO;
-
 LISTA* criar_lista() {
-    LISTA* li = (LISTA*) malloc(sizeof(LISTA));
-    if (li != NULL)
-        *li = NULL;
-    return li;
+    LISTA* lista = (LISTA*) malloc(sizeof(LISTA));
+    if (lista != NULL)
+        *lista = NULL;
+
+    return lista;
 }
 
 void liberar_lista(LISTA* li) {
@@ -29,10 +25,10 @@ int tamanho_lista(LISTA* li) {
         aborta_programa();
 
     int count = 0;
-    NO* prox = *li;
-    while (prox != NULL) {
+    NO* atual = *li;
+    while (atual != NULL) {
         count++;
-        prox = (*li)->prox;
+        atual = atual->prox;
     }
     return count;
 }
@@ -40,6 +36,7 @@ int tamanho_lista(LISTA* li) {
 int lista_cheia(LISTA* li) {
     if (li == NULL)
         aborta_programa();
+
     return 0;
 }
 
@@ -62,48 +59,84 @@ int insere_lista(LISTA* li, CONTATO contato) {
         return 0;
 
     no->data = contato;
-    if (lista_vazia(li)) {
-        no->prox = (*li);
+    if (lista_vazia(li) || contato.numero < (*li)->data.numero) {
+        no->prox = *li;
         *li = no;
         return contato.numero;
     }
 
-    NO *ant, *atual = *li;
+    NO* ant = *li;
+    NO* atual = (*li)->prox;
     while (atual != NULL && atual->data.numero < contato.numero) {
         ant = atual;
         atual = atual->prox;
     }
 
-    if (atual == *li) {
-        no->prox = (*li);
-        *li = no;
-    }
-    else {
-        no->prox = ant->prox;
-        ant->prox = no;
-    }
+    no->prox = atual;
+    ant->prox = no;
     
     return contato.numero;
 }
 
-int consulta_posicao(LISTA *li, int posicao, CONTATO *contato) {
+int consulta_posicao(LISTA* li, int posicao, CONTATO* contato) {
     if (li == NULL)
         aborta_programa();
 
     if (posicao <= 0)
         return 0;
 
-    NO *no = *li;
-    int i = 1;
-    while(no != NULL && i < posicao) {
+    NO* no = *li;
+    for (int i = 1; no != NULL && i < posicao; i++)
         no = no->prox;
-        i++;
-    }
 
     if (no == NULL)
         return 0;
 
-    *contato = no->data;    
+    *contato = no->data;
+    return 1;
+}
+
+int recuperar_lista(LISTA *li) {
+    FILE* file = fopen("contatos.bin", "rb");
+    if (file == NULL)
+        return 0;
+
+    CONTATO contato;
+    while (fread(&contato, sizeof(CONTATO), 1, file) == 1) {
+        if (!insere_lista(li, contato)) {
+            fclose(file);
+            return 0;
+        }
+    }
+
+    if (!feof(file)) {
+        fclose(file);
+        return 0;
+    }
+
+    fclose(file);
+    return 1;
+}
+
+int salvar_lista(LISTA *li) {
+    FILE* file = fopen("contatos.bin", "wb");
+    if (file == NULL)
+        return 0;
+
+    int tamanho = tamanho_lista(li);
+    CONTATO* contatos = (CONTATO*) malloc(sizeof(CONTATO) * tamanho);
+
+    int count = 0;
+    NO* atual = *li;
+    while (atual != NULL) {
+        contatos[count] = atual->data;
+        atual = atual->prox;
+        count++;
+    }
+
+    fwrite(contatos, sizeof(CONTATO), tamanho, file);
+
+    fclose(file);
     return 1;
 }
 
