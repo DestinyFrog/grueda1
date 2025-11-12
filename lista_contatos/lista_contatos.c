@@ -96,6 +96,42 @@ int consulta_posicao(LISTA* li, int posicao, CONTATO* contato) {
     return 1;
 }
 
+int consulta_identificacao(LISTA* li, int identificacao, CONTATO* contato) {
+    if (li == NULL)
+        aborta_programa();
+
+    if (identificacao <= 0)
+        return 0;
+
+    NO* no = *li;
+    for (int i = 1; no != NULL && identificacao != no->data.numero; i++)
+        no = no->prox;
+
+    if (no == NULL)
+        return 0;
+
+    *contato = no->data;
+    return 1;
+}
+
+int consulta_nome(LISTA* li_original, LISTA* li_nomes, char* nome) {
+    if (li_original == NULL)
+        aborta_programa();
+
+    if (li_nomes == NULL)
+        aborta_programa();
+
+    NO* no = *li_original;
+    for (int i = 1; no != NULL; i++) {
+        no = no->prox;
+
+        if (strstr(no->data.nome, nome) != NULL)
+            insere_lista(li_nomes, no->data);
+    }
+
+    return 1;
+}
+
 int recuperar_lista(LISTA *li) {
     FILE* file = fopen("contatos.bin", "rb");
     if (file == NULL)

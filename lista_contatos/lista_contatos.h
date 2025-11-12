@@ -30,6 +30,7 @@ int lista_vazia(LISTA* li);
 int tamanho_lista(LISTA* li);
 int insere_lista(LISTA* li, CONTATO contato);
 int consulta_posicao(LISTA *li, int posicao, CONTATO *contato);
+int consulta_identificacao(LISTA* li, int identificacao, CONTATO* contato);
 
 int recuperar_lista(LISTA *li);
 int salvar_lista(LISTA *li);

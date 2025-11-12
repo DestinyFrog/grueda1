@@ -45,6 +45,54 @@ int main() {
                 getchar();
                 break;
 
+            case 3:
+                printf("\t                         Relatório Individual\n");
+                clear();
+                printf("\tDigite o número de identificação do contato que está procurando: ");
+                int identificacao;
+                scanf("%d", &identificacao);
+                if ( consulta_identificacao(lista, identificacao, &contato) ) {
+                    printf("\n");
+                    print_line();   
+                    print_contato(&contato);
+                    print_line();
+                }
+                else
+                    printf("\t Erro ao ler esse Contato");
+                printf("\n\t Aperte qualquer tecla para voltar ao Menu Principal ...");
+                getchar();
+                getchar();
+                break;
+
+            case 4:
+                printf("\t                          Relatório por Nomes\n");
+                clear();
+                printf("\tDigite o nome do contato que está procurando: ");
+                char nome[100];
+                fgets(nome, 100, stdin);
+                for (int i = 0; i < strlen(nome); i++)
+                    *p = tolower(*p);
+
+                LISTA* lista_nomes = criar_lista();
+                if ( consulta_nome(lista, lista_nomes, nome) ) {
+                    printf("\n");
+                    print_line();
+                    int tamanho = tamanho_lista(lista);
+                    for (int i = 1; i < tamanho; i++) {
+                        if ( consulta_posicao(lista, i, &contato) )
+                            print_contato(&contato);
+                        else
+                            printf("\t Erro ao ler esse Contato");
+                        print_line();
+                    }
+                }
+                else
+                    printf("\t Erro ao ler esse Contato");
+                printf("\n\t Aperte qualquer tecla para voltar ao Menu Principal ...");
+                getchar();
+                getchar();
+                break;
+
             case 7:
                 repeat = 0;
                 break;
