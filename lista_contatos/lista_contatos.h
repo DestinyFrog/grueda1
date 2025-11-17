@@ -1,6 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
+
+void aborta_programa();
+void str_lower(char* str);
+int confirmar();
+void campo_editavel(char* campo, char* valor_inicial, int tamanho);
 
 typedef struct contato {
     int numero;
@@ -15,10 +21,11 @@ typedef struct contato {
 CONTATO scan_contato();
 void print_contato(CONTATO* contato);
 CONTATO create_fake_contato();
+CONTATO edit_contato(CONTATO* contato);
 
-typedef struct NO {
+typedef struct no {
     CONTATO data;
-    struct NO* prox;
+    struct no* prox;
 } NO;
 
 typedef NO* LISTA;
@@ -31,8 +38,8 @@ int tamanho_lista(LISTA* li);
 int insere_lista(LISTA* li, CONTATO contato);
 int consulta_posicao(LISTA *li, int posicao, CONTATO *contato);
 int consulta_identificacao(LISTA* li, int identificacao, CONTATO* contato);
+int consulta_nome(LISTA* li_original, LISTA* li_nomes, char* nome);
+int remove_lista(LISTA* li, int identificacao);
 
 int recuperar_lista(LISTA *li);
 int salvar_lista(LISTA *li);
-
-void aborta_programa();

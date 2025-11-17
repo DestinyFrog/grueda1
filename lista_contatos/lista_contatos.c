@@ -114,21 +114,60 @@ int consulta_identificacao(LISTA* li, int identificacao, CONTATO* contato) {
     return 1;
 }
 
-int consulta_nome(LISTA* li_original, LISTA* li_nomes, char* nome) {
-    if (li_original == NULL)
+int consulta_nome(LISTA* li_original, LISTA* li_nomes, char nome[100]) {
+    if (li_original == NULL || li_nomes == NULL)
         aborta_programa();
 
-    if (li_nomes == NULL)
-        aborta_programa();
+    char nome_busca[100];
+    strcpy(nome_busca, nome);
+    for (char* p = nome_busca; *p != '\0'; *p++)
+        *p = tolower(*p);
 
-    NO* no = *li_original;
-    for (int i = 1; no != NULL; i++) {
-        no = no->prox;
+    char nome_contato[100];
 
-        if (strstr(no->data.nome, nome) != NULL)
-            insere_lista(li_nomes, no->data);
+    CONTATO contato;
+    NO* atual = *li_original;
+    int encontrados = 0;
+
+    while (atual != NULL) {
+        strcpy(nome_contato, atual->data.nome);
+        for (char* p = nome_contato; *p != '\0'; *p++)
+            *p = tolower(*p);
+
+        if (strstr(nome_contato, nome_busca)) {
+            contato = atual->data;
+            if (insere_lista(li_nomes, contato))
+                encontrados++;
+        }
+        atual = atual->prox;
     }
 
+    return encontrados;
+}
+
+int remove_lista(LISTA* li, int identificacao) { 
+    if (li == NULL)
+        aborta_programa();
+
+    if (identificacao <= 0 || *li == NULL)
+        return 0;
+
+    NO* ant = NULL;
+    NO* no = *li;
+    for (int i = 1; no != NULL && identificacao != no->data.numero; i++) {
+        ant = no;
+        no = no->prox;
+    }
+
+    if (no == NULL)
+        return 0;
+
+    if (ant == NULL)
+        *li = no->prox;
+    else
+        ant->prox = no->prox;
+    
+    free(no);
     return 1;
 }
 
@@ -174,9 +213,4 @@ int salvar_lista(LISTA *li) {
 
     fclose(file);
     return 1;
-}
-
-void aborta_programa() {
-    printf("Abortou o programa");
-    exit(1);
 }

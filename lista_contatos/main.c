@@ -1,11 +1,13 @@
 #include "lista_contatos.h"
 
+int confirmar();
 int scan_menu();
 void print_line();
 void clear();
 
 int main() {
     int repeat = 1;
+    int identificacao;
 
     CONTATO contato;
     LISTA* lista = criar_lista();
@@ -49,7 +51,6 @@ int main() {
                 printf("\t                         Relatório Individual\n");
                 clear();
                 printf("\tDigite o número de identificação do contato que está procurando: ");
-                int identificacao;
                 scanf("%d", &identificacao);
                 if ( consulta_identificacao(lista, identificacao, &contato) ) {
                     printf("\n");
@@ -61,25 +62,25 @@ int main() {
                     printf("\t Erro ao ler esse Contato");
                 printf("\n\t Aperte qualquer tecla para voltar ao Menu Principal ...");
                 getchar();
-                getchar();
                 break;
 
             case 4:
                 printf("\t                          Relatório por Nomes\n");
                 clear();
-                printf("\tDigite o nome do contato que está procurando: ");
+
+                printf("\n\tDigite o nome do contato que está procurando: ");
                 char nome[100];
+                getchar();
                 fgets(nome, 100, stdin);
-                for (int i = 0; i < strlen(nome); i++)
-                    *p = tolower(*p);
+                nome[strlen(nome) -1] = '\0';
 
                 LISTA* lista_nomes = criar_lista();
                 if ( consulta_nome(lista, lista_nomes, nome) ) {
                     printf("\n");
                     print_line();
-                    int tamanho = tamanho_lista(lista);
+                    int tamanho = tamanho_lista(lista_nomes);
                     for (int i = 1; i < tamanho; i++) {
-                        if ( consulta_posicao(lista, i, &contato) )
+                        if ( consulta_posicao(lista_nomes, i, &contato) )
                             print_contato(&contato);
                         else
                             printf("\t Erro ao ler esse Contato");
@@ -87,7 +88,63 @@ int main() {
                     }
                 }
                 else
+                    printf("\t Nenhum registro encontrado");
+
+                printf("\n\t Aperte qualquer tecla para voltar ao Menu Principal ...");
+                getchar();
+                liberar_lista(lista_nomes);
+                break;
+
+            case 5:
+                printf("\t                            Editar Contato\n");
+                clear();
+                printf("\n\tDigite o número de identificação do contato que será editado: ");
+                scanf("%d", &identificacao);
+
+                if ( !consulta_identificacao(lista, identificacao, &contato) ) {
                     printf("\t Erro ao ler esse Contato");
+                    break;
+                }
+
+                printf("\n");
+                getchar();
+                contato = edit_contato(&contato);
+
+                if ( remove_lista(lista, identificacao) ) {
+                    if ( insere_lista(lista, contato) )
+                        printf("\t Contato editado com sucesso!");
+                } else
+                    printf("\n\t Erro ao ler esse Contato");
+
+                printf("\n\t Aperte qualquer tecla para voltar ao Menu Principal ...");
+                getchar();
+                break;
+
+            case 6:
+                printf("\t                           Excluir Contato\n");
+                clear();
+                printf("\n\tDigite o número de identificação do contato que será deletado: ");
+                scanf("%d", &identificacao);
+
+                if ( consulta_identificacao(lista, identificacao, &contato) ) {
+                    printf("\n");
+                    print_line();   
+                    print_contato(&contato);
+                    print_line();
+                }
+                else {
+                    printf("\t Erro ao ler esse Contato");
+                    break;
+                }
+
+                printf("\n\t Deseja mesmo deletar esse contato? ");
+                if ( confirmar() ) {
+                    if ( !remove_lista(lista, identificacao) )
+                        printf("\n\t Erro ao ler esse Contato");
+                    else
+                        printf("\t Contato deletado com sucesso");
+                }
+
                 printf("\n\t Aperte qualquer tecla para voltar ao Menu Principal ...");
                 getchar();
                 getchar();

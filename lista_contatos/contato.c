@@ -57,3 +57,32 @@ void print_contato(CONTATO* contato) {
     printf("\t Telefone Celular      | %s\n", contato->telefone_celular);
     printf("\t Email                 | %s\n", contato->email);
 }
+
+CONTATO edit_contato(CONTATO* contato) {
+    CONTATO novo_contato;
+    novo_contato.numero = contato->numero;
+
+    printf("\t Digite [backspace] para manter o valor anterior\n\n");
+
+    printf("\t Nome (antigo)           | %s\n", contato->nome);
+    printf("\t ╚> Nome                 | ");
+    campo_editavel(novo_contato.nome, contato->nome, 100);
+
+    printf("\n\t Empresa (antigo)        | %s\n", contato->empresa);
+    printf("\t ╚> Empresa              | ");
+    campo_editavel(novo_contato.empresa, contato->empresa, 100);
+
+    printf("\n\t Departamento (antigo)   | %s\n", contato->departamento);
+    printf("\t ╚> Departamento         | ");
+    campo_editavel(novo_contato.departamento, contato->departamento, 100); 
+
+    printf("\n\t Empresa (antigo)        | %s\n", contato->empresa);
+    printf("\t ╚> Empresa              | ");
+    campo_editavel(novo_contato.empresa, contato->empresa, 100); 
+
+    printf("\n\t Empresa (antigo)        | %s\n", contato->empresa);
+    printf("\t ╚> Empresa              | ");
+    campo_editavel(novo_contato.empresa, contato->empresa, 100); 
+
+    return novo_contato;
+}
