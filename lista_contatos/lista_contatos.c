@@ -1,4 +1,4 @@
-#include "lista_contatos.h"
+#include "app.h"
 
 LISTA* criar_lista() {
     LISTA* lista = (LISTA*) malloc(sizeof(LISTA));
@@ -114,16 +114,16 @@ int consulta_identificacao(LISTA* li, int identificacao, CONTATO* contato) {
     return 1;
 }
 
-int consulta_nome(LISTA* li_original, LISTA* li_nomes, char nome[100]) {
+int consulta_nome(LISTA* li_original, LISTA* li_nomes, char nome[FIELD_STR_SIZE]) {
     if (li_original == NULL || li_nomes == NULL)
         aborta_programa();
 
-    char nome_busca[100];
+    char nome_busca[FIELD_STR_SIZE];
     strcpy(nome_busca, nome);
     for (char* p = nome_busca; *p != '\0'; *p++)
         *p = tolower(*p);
 
-    char nome_contato[100];
+    char nome_contato[FIELD_STR_SIZE];
 
     CONTATO contato;
     NO* atual = *li_original;
@@ -213,4 +213,33 @@ int salvar_lista(LISTA *li) {
 
     fclose(file);
     return 1;
+}
+
+void printa_lista(LISTA *li) {
+    CONTATO contato;
+
+    printf("\n");
+    print_line();
+    int tamanho = tamanho_lista(li);
+    for (int i = 1; i <= tamanho; i++) {
+        if ( consulta_posicao(li, i, &contato) )
+            print_contato(&contato);
+        else
+            printf("\t Erro ao ler esse Contato");
+        print_line();
+    }
+
+    switch ( tamanho_lista(li) ) {
+        case 0:
+            printf("\t A lista esta vazia.\n");
+        break;
+
+        case 1:
+            printf("\t A lista contem 1 contato.\n");
+        break;
+
+        default:
+            printf("\t A lista contem %d contatos.\n", tamanho);
+        break;
+    }
 }

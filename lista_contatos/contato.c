@@ -1,4 +1,4 @@
-#include "lista_contatos.h"
+#include "app.h"
 
 CONTATO scan_contato() {
     CONTATO contato;
@@ -9,15 +9,15 @@ CONTATO scan_contato() {
 
     printf("\tNome                  : ");
     getchar();
-    fgets(contato.nome, 100, stdin);
+    fgets(contato.nome, FIELD_STR_SIZE, stdin);
     contato.nome[strlen(contato.nome) -1] = '\0';
 
     printf("\tEmpresa               : ");
-    fgets(contato.empresa, 100, stdin);
+    fgets(contato.empresa, FIELD_STR_SIZE, stdin);
     contato.empresa[strlen(contato.empresa) -1] = '\0';
 
     printf("\tDepartamento          : ");
-    fgets(contato.departamento, 100, stdin);
+    fgets(contato.departamento, FIELD_STR_SIZE, stdin);
     contato.departamento[strlen(contato.departamento) -1] = '\0';
 
     printf("\tTelefone Fixo         : ");
@@ -29,22 +29,9 @@ CONTATO scan_contato() {
     contato.telefone_celular[strlen(contato.telefone_celular) -1] = '\0';
 
     printf("\tEmail                 : ");
-    fgets(contato.email, 100, stdin);
+    fgets(contato.email, FIELD_STR_SIZE, stdin);
     contato.email[strlen(contato.email) -1] = '\0';
 
-    return contato;
-}
-
-CONTATO create_fake_contato() {
-    CONTATO contato = {
-        10,
-        "Pedro Calisto",
-        "ACME INC.",
-        "TI e telefonia",
-        "(11) 1234-5678",
-        "+55 (11) 01234-5678",
-        "pedro.calisto@acme.com"
-    };
     return contato;
 }
 
@@ -66,23 +53,27 @@ CONTATO edit_contato(CONTATO* contato) {
 
     printf("\t Nome (antigo)           | %s\n", contato->nome);
     printf("\t ╚> Nome                 | ");
-    campo_editavel(novo_contato.nome, contato->nome, 100);
+    campo_editavel(novo_contato.nome, contato->nome, FIELD_STR_SIZE);
 
     printf("\n\t Empresa (antigo)        | %s\n", contato->empresa);
     printf("\t ╚> Empresa              | ");
-    campo_editavel(novo_contato.empresa, contato->empresa, 100);
+    campo_editavel(novo_contato.empresa, contato->empresa, FIELD_STR_SIZE);
 
     printf("\n\t Departamento (antigo)   | %s\n", contato->departamento);
     printf("\t ╚> Departamento         | ");
-    campo_editavel(novo_contato.departamento, contato->departamento, 100); 
+    campo_editavel(novo_contato.departamento, contato->departamento, FIELD_STR_SIZE); 
 
-    printf("\n\t Empresa (antigo)        | %s\n", contato->empresa);
-    printf("\t ╚> Empresa              | ");
-    campo_editavel(novo_contato.empresa, contato->empresa, 100); 
+    printf("\n\t Telefone Fixo (antigo)  | %s\n", contato->telefone_fixo);
+    printf("\t ╚> Telefone Fixo        | ");
+    campo_editavel(novo_contato.telefone_fixo, contato->telefone_fixo, FIELD_STR_SIZE); 
 
-    printf("\n\t Empresa (antigo)        | %s\n", contato->empresa);
-    printf("\t ╚> Empresa              | ");
-    campo_editavel(novo_contato.empresa, contato->empresa, 100); 
+    printf("\n\t Telefone Celular (antigo)| %s\n", contato->telefone_celular);
+    printf("\t ╚> Telefone Celular      | ");
+    campo_editavel(novo_contato.telefone_celular, contato->telefone_celular, FIELD_STR_SIZE); 
+
+    printf("\n\t Email (antigo)           | %s\n", contato->email);
+    printf("\t ╚> Email                 | ");
+    campo_editavel(novo_contato.email, contato->email, FIELD_STR_SIZE); 
 
     return novo_contato;
 }
